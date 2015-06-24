@@ -1,0 +1,47 @@
+apply plugin: 'groovy'
+apply plugin: 'eclipse'
+apply plugin: 'maven-publish'
+
+
+sourceCompatibility = 1.7
+version = '1.0'
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'Groptim: a Groovy DSL for Linear Programming',
+                   'Implementation-Version': version
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+	compile 'org.codehaus.groovy:groovy:2.4.3'
+	compile 'org.apache.commons:commons-math3:3.5'
+	testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
+}
+
+test {
+    systemProperties 'property': 'value'
+}
+
+uploadArchives {
+    repositories {
+       flatDir {
+           dirs 'repos'
+       }
+    }
+}
+
+publishing {
+	publications {
+		maven(MavenPublication) {
+			groupId 'org.ytheohar'
+			artifactId 'groptim'
+			version '1.0'
+
+			from components.java
+		}
+	}
+}
