@@ -38,7 +38,7 @@ class LPSolver {
 		Number.metaClass.getC { new NumberExpression(delegate) }
 	}
 
-	def methodMissing(String name, args) {
+	def registerVar(String name) {
 		def var = new LPVar(name, this)
 		varToIndex[var] = index
 		indexToVar[index] = var
@@ -48,11 +48,8 @@ class LPSolver {
 	}
 
 	def propertyMissing(String name) {
-		if (name == 'res') {
-			res()
-		}
 		def v = props[name]
-		if (v) v else methodMissing(name, [])
+		if (v) v else registerVar(name)
 	}
 
 	def max(Closure c) {
