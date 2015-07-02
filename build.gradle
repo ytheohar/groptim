@@ -23,7 +23,9 @@ dependencies {
 }
 
 test {
-    systemProperties 'property': 'value'
+	testLogging {
+		events "passed", "skipped", "failed", "standardOut", "standardError"
+	}
 }
 
 uploadArchives {
