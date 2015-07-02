@@ -75,13 +75,7 @@ class LPSolver {
 
 	def subjectTo(Closure c) {
 		c.delegate = this
-		def signs = c()
-
-		if (signs.class != Boolean) {
-			[constraints, signs].transpose().each {
-				it[0].leq = it[1]
-			}
-		}
+		c()
 		solve()
 	}
 
