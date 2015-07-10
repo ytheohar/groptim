@@ -209,7 +209,7 @@ class LPSolverSpec extends Specification {
 
 		then:
 			lp.x0.value == 1.0
-			lp.x2.value == 0.0
+			lp.x1.value == 0.0
 			lp.objectiveValue == 1.0
 	}
 
@@ -242,7 +242,6 @@ class LPSolverSpec extends Specification {
 
 		then:
 			lp.x0.value == 0.005
-			lp.x2.value == 0.0
 			lp.objectiveValue == 0.005
 	}
 
