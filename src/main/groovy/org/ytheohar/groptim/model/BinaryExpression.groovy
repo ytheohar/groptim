@@ -17,12 +17,14 @@ class BinaryExpression extends NumberExpression {
 		this.right = right
 		this.op = op
 		val = op==Operator.MINUS ? -1 : 1
-		
-		if (left.solver) {
-			this.solver = left.solver
-		} else {
-			this.solver = right.solver
+
+		if (left.solver == null && left.solver == right.solver) {
+			throw new IllegalStateException("At least one operand needs to have solver set.")
 		}
+		if (left.solver != null && right.solver != null && left.solver != right.solver) {
+			throw new IllegalStateException("The operand are not allowed to have different solvers set.")
+		}
+		this.solver = left.solver ?: right.solver
 	}
 
 	def fill(RealVector v, Map<LPVar, Integer> vars, int sign) {
@@ -70,5 +72,4 @@ class BinaryExpression extends NumberExpression {
 	public String toString() {
 		return '['+ left.toString() +op+ right.toString()+ ']';
 	}
-
 }
