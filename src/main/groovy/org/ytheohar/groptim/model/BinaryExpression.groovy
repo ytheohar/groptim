@@ -27,44 +27,43 @@ class BinaryExpression extends NumberExpression {
 		this.solver = left.solver ?: right.solver
 	}
 
-	def fill(RealVector v, Map<LPVar, Integer> vars, int sign) {
-		fill(v, vars, left, right, sign)
+	def fill(RealVector v, int sign) {
+		fill(v, left, right, sign)
 	}
 
-	def fill(RealVector v, Map<LPVar, Integer> vars, LPVar l, LPVar r, int sign) {
-		v.setEntry(vars[l], sign*1)
-		v.setEntry(vars[r], sign*val)
+	def fill(RealVector v, LPVar l, LPVar r, int sign) {
+		v.setEntry(l.index, sign*1)
+		v.setEntry(r.index, sign*val)
 		0
 	}
 
-	def fill(RealVector v, Map<LPVar, Integer> vars, NumberExpression l, LPVar r, int sign) {
+	def fill(RealVector v, NumberExpression l, LPVar r, int sign) {
 		def newVal = sign*val*l.num
-		v.setEntry(vars[r], newVal)
+		v.setEntry(r.index, newVal)
 		0
 	}
 
-	def fill(RealVector v, Map<LPVar, Integer> vars, BinaryExpression l, LPVar r, int sign) {
+	def fill(RealVector v, BinaryExpression l, LPVar r, int sign) {
 		def newVal = sign*val
-		l.fill(v, vars, sign)
-		v.setEntry(vars[r], newVal)
+		l.fill(v, sign)
+		v.setEntry(r.index, newVal)
 		0
 	}
 
-	def fill(RealVector v, Map<LPVar, Integer> vars, LPVar l, BinaryExpression r, int sign) {
+	def fill(RealVector v, LPVar l, BinaryExpression r, int sign) {
 		def newVal = sign*val
-		v.setEntry(vars[l], 1)
-		r.fill(v, vars, newVal)
+		v.setEntry(l.index, 1)
+		r.fill(v, newVal)
 	}
 
-	def fill(RealVector v, Map<LPVar, Integer> vars, BinaryExpression l, BinaryExpression r, int sign) {
+	def fill(RealVector v, BinaryExpression l, BinaryExpression r, int sign) {
 		def newVal = sign*val
-		def c = l.fill(v, vars, sign)
-		c += r.fill(v, vars, newVal)
+		l.fill(v, sign) + r.fill(v, newVal)
 	}
 
-	def fill(RealVector v, Map<LPVar, Integer> vars, BinaryExpression l, NumberExpression r, int sign) {
+	def fill(RealVector v, BinaryExpression l, NumberExpression r, int sign) {
 		def newVal = sign*val
-		l.fill(v, vars, sign)
+		l.fill(v, sign)
 		newVal*r.num
 	}
 

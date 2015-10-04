@@ -22,14 +22,13 @@ import org.ytheohar.groptim.model.Operator
 class LPSolver {
 	private static final MaxIter DEFAULT_MAX_ITER = new MaxIter(100)
 
-	double objectiveValue
-	Map<LPVar, Integer> varToIndex = [:]
-	Map<Integer, LPVar> indexToVar = [:]
-	List<Constraint> constraints = []
-	def props = [:]
-	Expression objFunc
-	int index
 	GoalType type
+	Expression objFunc
+	double objectiveValue
+	def vars = []
+	def constraints = []
+	def nameToVar = [:]
+	int index
 
 	LPSolver() {
 		Number.metaClass.multiply = { Expression e ->
@@ -39,17 +38,15 @@ class LPSolver {
 	}
 
 	def registerVar(String name) {
-		def var = new LPVar(name, this)
-		varToIndex[var] = index
-		indexToVar[index] = var
+		def var = new LPVar(name, index, this)
 		index++
-		props[name] = var
+		vars << var
+		nameToVar[name] = var
 		var
 	}
 
 	def propertyMissing(String name) {
-		def v = props[name]
-		if (v) v else registerVar(name)
+		nameToVar[name] ?: registerVar(name)
 	}
 
 	def max(Closure c) {
@@ -89,14 +86,14 @@ class LPSolver {
 
 		objectiveValue = solution.value
 		solution.point.eachWithIndex { it, index ->
-			indexToVar[index].value = it
+			vars[index].value = it
 		}
-		[objectiveValue, varToIndex.keySet()]
+		[objectiveValue, vars]
 	}
 
 	def toSparseVector(Expression e) {
-		RealVector v = new OpenMapRealVector(varToIndex.size());
-		def c = e.fill(v, varToIndex, 1)
+		RealVector v = new OpenMapRealVector(nameToVar.size());
+		def c = e.fill(v, 1)
 		[v, c]
 	}
 

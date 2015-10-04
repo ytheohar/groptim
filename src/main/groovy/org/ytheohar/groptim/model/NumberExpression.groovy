@@ -12,7 +12,7 @@ class NumberExpression extends Expression {
 		new NumberExpression(-num)
 	}
 
-	def fill(RealVector v, Map<LPVar, Integer> vars, int sign) {
+	def fill(RealVector v, int sign) {
 		sign*num
 	}
 
