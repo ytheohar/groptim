@@ -1,11 +1,8 @@
 package org.ytheohar.groptim.model
 
-import groovy.transform.EqualsAndHashCode
-
 import org.apache.commons.math3.linear.RealVector
 import org.ytheohar.groptim.LPSolver
 
-@EqualsAndHashCode(includes = 'label')
 class LPVar extends NumberExpression {
 	String label
 	double value
