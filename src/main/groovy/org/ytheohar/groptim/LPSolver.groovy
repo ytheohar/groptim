@@ -22,7 +22,7 @@ import org.ytheohar.groptim.model.Operator
 class LPSolver {
 	private static final MaxIter DEFAULT_MAX_ITER = new MaxIter(100)
 
-	GoalType type
+	boolean max
 	Expression objFunc
 	double objectiveValue
 	def vars = []
@@ -50,12 +50,12 @@ class LPSolver {
 	}
 
 	def max(Closure c) {
-		type = GoalType.MAXIMIZE
+		max = true
 		optimize c
 	}
 
 	def min(Closure c) {
-		type = GoalType.MINIMIZE
+		max = false
 		optimize c
 	}
 
@@ -81,8 +81,9 @@ class LPSolver {
 		def apacheConstraints = constraints.collect { toApacheConstraint(it) }
 
 		SimplexSolver solver = new SimplexSolver();
+		GoalType type = max ? GoalType.MAXIMIZE : GoalType.MINIMIZE
 		PointValuePair solution = solver.optimize(DEFAULT_MAX_ITER, f, new LinearConstraintSet(apacheConstraints),
-				type, new NonNegativeConstraint(true));
+				type, new NonNegativeConstraint(false));
 
 		objectiveValue = solution.value
 		solution.point.eachWithIndex { it, index ->
