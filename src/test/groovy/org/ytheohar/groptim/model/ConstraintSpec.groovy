@@ -66,7 +66,7 @@ class ConstraintSpec extends Specification {
 		lp.max { 0.c } subjectTo {
 			x0 - x1 <= 4.c
 		}
-		def c = lp.toApacheConstraint(lp.constraints[0])
+		def c = lp.solverEngine.toApacheConstraint(lp.constraints[0], 2)
 
 		then:
 		lp.constraints[0].e.left == lp.x0
@@ -87,7 +87,7 @@ class ConstraintSpec extends Specification {
 		lp.max { 0.c } subjectTo {
 			- x0 - coef2*x1 <= 4.c
 		}
-		def c = lp.toApacheConstraint(lp.constraints[0])
+		def c = lp.solverEngine.toApacheConstraint(lp.constraints[0], 2)
 
 		then:
 		c.coefficients.getEntry(lp.x0.index) == -1
@@ -108,7 +108,7 @@ class ConstraintSpec extends Specification {
 		lp.max { 0.c } subjectTo {
 			-x0 - x1 <= 4.c
 		}
-		def c = lp.toApacheConstraint(lp.constraints[0])
+		def c = lp.solverEngine.toApacheConstraint(lp.constraints[0], 2)
 
 		then:
 		c.coefficients.getEntry(lp.x0.index) == -1.0
@@ -123,7 +123,7 @@ class ConstraintSpec extends Specification {
 		lp.max { 0.c } subjectTo {
 			- x0 - x1 <= 4.c
 		}
-		def c = lp.toApacheConstraint(lp.constraints[0])
+		def c = lp.solverEngine.toApacheConstraint(lp.constraints[0], 2)
 
 		then:
 		c.coefficients.getEntry(lp.x0.index) == -1.0

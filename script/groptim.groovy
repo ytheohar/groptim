@@ -10,9 +10,9 @@ if(args) {
 	def lp = new LPSolver()
 	Binding binding = new Binding(max: lp.&max, min: lp.&min)
 	GroovyShell shell = new GroovyShell(binding);
-	def (objectiveValue, vars) = shell.evaluate (new File(args[0]))
-	println 'optimum = '+ objectiveValue
-	vars.each {
+	shell.evaluate (new File(args[0]))
+	println 'optimum = '+ lp.objectiveValue
+	lp.vars.each {
 		println it.label +' = '+ it.value
 	}
 } else {

@@ -226,7 +226,7 @@ class ObjFuncSpec extends Specification {
 
 		when:
 		lp.max { coef0*x0 + coef1*x1 + 5.c}
-		def o = lp.toApacheObjFunc(lp.objFunc)
+		def o = lp.solverEngine.toApacheObjFunc(lp.objFunc, 2)
 
 		then:
 		o.coefficients.getEntry(lp.x0.index) == coef0
@@ -246,8 +246,10 @@ class ObjFuncSpec extends Specification {
 		def lp = new LPSolver()
 
 		when:
-		lp.max { coef0*x0 + coef1*x1 - 5.c}
-		def o = lp.toApacheObjFunc(lp.objFunc)
+		lp.max {
+			coef0*x0 + coef1*x1 - 5.c
+		}
+		def o = lp.solverEngine.toApacheObjFunc(lp.objFunc, 2)
 
 		then:
 		o.coefficients.getEntry(lp.x0.index) == coef0
@@ -268,7 +270,7 @@ class ObjFuncSpec extends Specification {
 
 		when:
 		lp.max { coef0*x0 - coef1*x1 + 5.c}
-		def o = lp.toApacheObjFunc(lp.objFunc)
+		def o = lp.solverEngine.toApacheObjFunc(lp.objFunc, 2)
 
 		then:
 		o.coefficients.getEntry(lp.x0.index) == coef0
@@ -289,7 +291,7 @@ class ObjFuncSpec extends Specification {
 
 		when:
 		lp.max { coef0*x0 - coef1*x1 - 5.c}
-		def o = lp.toApacheObjFunc(lp.objFunc)
+		def o = lp.solverEngine.toApacheObjFunc(lp.objFunc, 2)
 
 		then:
 		o.coefficients.getEntry(lp.x0.index) == coef0
@@ -310,7 +312,7 @@ class ObjFuncSpec extends Specification {
 
 		when:
 		lp.max { -coef0*x0 + coef1*x1 + 5.c}
-		def o = lp.toApacheObjFunc(lp.objFunc)
+		def o = lp.solverEngine.toApacheObjFunc(lp.objFunc, 2)
 
 		then:
 		o.coefficients.getEntry(lp.x0.index) == -coef0
@@ -331,7 +333,7 @@ class ObjFuncSpec extends Specification {
 
 		when:
 		lp.max { -coef0*x0 + coef1*x1 - 5.c}
-		def o = lp.toApacheObjFunc(lp.objFunc)
+		def o = lp.solverEngine.toApacheObjFunc(lp.objFunc, 2)
 
 		then:
 		o.coefficients.getEntry(lp.x0.index) == -coef0
@@ -352,7 +354,7 @@ class ObjFuncSpec extends Specification {
 
 		when:
 		lp.max { -coef0*x0 - coef1*x1 + 5.c}
-		def o = lp.toApacheObjFunc(lp.objFunc)
+		def o = lp.solverEngine.toApacheObjFunc(lp.objFunc, 2)
 
 		then:
 		o.coefficients.getEntry(lp.x0.index) == -coef0
@@ -373,7 +375,7 @@ class ObjFuncSpec extends Specification {
 
 		when:
 		lp.max { -coef0*x0 - coef1*x1 - 5.c}
-		def o = lp.toApacheObjFunc(lp.objFunc)
+		def o = lp.solverEngine.toApacheObjFunc(lp.objFunc, 2)
 
 		then:
 		o.coefficients.getEntry(lp.x0.index) == -coef0
@@ -394,7 +396,7 @@ class ObjFuncSpec extends Specification {
 
 		when:
 		lp.max { -coef0*x0 + 5.c}
-		def o = lp.toApacheObjFunc(lp.objFunc)
+		def o = lp.solverEngine.toApacheObjFunc(lp.objFunc, 1)
 
 		then:
 		o.coefficients.getEntry(lp.x0.index) == -coef0
@@ -413,7 +415,7 @@ class ObjFuncSpec extends Specification {
 
 		when:
 		lp.max { -coef0*x0 - 5.c}
-		def o = lp.toApacheObjFunc(lp.objFunc)
+		def o = lp.solverEngine.toApacheObjFunc(lp.objFunc, 1)
 
 		then:
 		o.coefficients.getEntry(lp.x0.index) == -coef0
@@ -432,7 +434,7 @@ class ObjFuncSpec extends Specification {
 
 		when:
 		lp.max { coef0*x0 }
-		def o = lp.toApacheObjFunc(lp.objFunc)
+		def o = lp.solverEngine.toApacheObjFunc(lp.objFunc, 1)
 
 		then:
 		o.coefficients.getEntry(lp.x0.index) == coef0
@@ -451,7 +453,7 @@ class ObjFuncSpec extends Specification {
 
 		when:
 		lp.max { -coef0*x0 }
-		def o = lp.toApacheObjFunc(lp.objFunc)
+		def o = lp.solverEngine.toApacheObjFunc(lp.objFunc, 1)
 
 		then:
 		o.coefficients.getEntry(lp.x0.index) == -coef0
