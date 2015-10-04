@@ -16,6 +16,12 @@ import org.ytheohar.groptim.model.Expression
 import org.ytheohar.groptim.model.LPVar
 
 
+/**
+ * The Apache Math3 Simplex implementation of SolverEngine. 
+ * Effectively a wrapper around Apache Math3 Simplex implementation.
+ *
+ * @author Yannis Theocharis
+ */
 class ApacheSimplexImpl implements SolverEngine {
 	private static final MaxIter DEFAULT_MAX_ITER = new MaxIter(100)
 

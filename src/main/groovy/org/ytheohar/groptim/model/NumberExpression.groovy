@@ -4,6 +4,11 @@ import groovy.transform.TupleConstructor
 
 import org.apache.commons.math3.linear.RealVector
 
+/**
+ * Models a constant number
+ *
+ * @author Yannis Theocharis
+ */
 @TupleConstructor
 class NumberExpression extends Expression {
 	double num

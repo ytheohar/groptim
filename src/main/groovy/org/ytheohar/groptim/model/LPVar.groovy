@@ -3,6 +3,11 @@ package org.ytheohar.groptim.model
 import org.apache.commons.math3.linear.RealVector
 import org.ytheohar.groptim.LPSolver
 
+/**
+ * Models a variable of an LP instance
+ *
+ * @author Yannis Theocharis
+ */
 class LPVar extends NumberExpression {
 	String label
 	double value

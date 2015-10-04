@@ -2,6 +2,12 @@ package org.ytheohar.groptim.model
 
 import org.apache.commons.math3.linear.RealVector
 
+/**
+ * Models a binary tree node of the expressions built 
+ * for the objective function and the constraints
+ *
+ * @author Yannis Theocharis
+ */
 class BinaryExpression extends NumberExpression {
 	Expression left
 	Expression right
