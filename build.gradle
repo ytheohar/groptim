@@ -1,16 +1,86 @@
 apply plugin: 'groovy'
 apply plugin: 'eclipse'
-apply plugin: 'maven-publish'
-
+apply plugin: 'maven'
+apply plugin: 'signing'
 
 sourceCompatibility = 1.7
+
+group = 'org.ytheohar'
+archivesBaseName = 'groptim'
 version = '1.0'
+
 jar {
-    manifest {
-        attributes 'Implementation-Title': 'Groptim: a Groovy DSL for Linear Programming',
-                   'Implementation-Version': version
-    }
+	manifest {
+		attributes 'Implementation-Title': 'Groptim: a Groovy DSL for Linear Programming',
+		'Implementation-Version': version
+	}
 }
+
+task javadocJar(type: Jar) {
+	classifier = 'javadoc'
+	from javadoc
+}
+
+task sourcesJar(type: Jar) {
+	classifier = 'sources'
+	from sourceSets.main.allSource
+}
+
+artifacts {
+	archives javadocJar, sourcesJar
+}
+
+signing {
+	sign configurations.archives
+}
+
+
+uploadArchives {
+	repositories {
+		mavenDeployer {
+			beforeDeployment {
+				MavenDeployment deployment -> signing.signPom(deployment)
+			}
+
+			repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+				authentication(userName: ossrhUsername, password: ossrhPassword)
+			}
+
+			snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+				authentication(userName: ossrhUsername, password: ossrhPassword)
+			}
+
+			pom.project {
+				name 'org.ytheohar:groptim'
+				packaging 'jar'
+				description 'A Groovy DSL for Linear Programming'
+				url 'http://ytheohar.blogspot.co.uk/2015/06/groptim-groovy-dsl-for-linear.html'
+  
+				scm {
+					connection 'scm:git:git@github.com:ytheohar/groptim.git'
+					developerConnection 'scm:git:git@github.com:ytheohar/groptim.git'
+					url 'git@github.com:ytheohar/groptim.git'
+				}
+  
+				licenses {
+					license {
+						name 'The Apache License, Version 2.0'
+						url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+					}
+				}
+  
+				developers {
+					developer {
+						id 'ytheohar'
+						name 'Yannis Theocharis'
+						email 'ytheohar@gmail.com'
+					}
+				}
+			}
+		}
+	}
+}
+
 
 repositories {
     mavenCentral()
@@ -28,22 +98,3 @@ test {
 	}
 }
 
-uploadArchives {
-    repositories {
-       flatDir {
-           dirs 'repos'
-       }
-    }
-}
-
-publishing {
-	publications {
-		maven(MavenPublication) {
-			groupId 'org.ytheohar'
-			artifactId 'groptim'
-			version '1.0'
-
-			from components.java
-		}
-	}
-}
